@@ -2,9 +2,14 @@ import sys
 import os
 
 # Add the flask directory to the path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'flask'))
+flask_dir = os.path.join(os.path.dirname(__file__), '..', 'flask')
+sys.path.insert(0, flask_dir)
 
-from app import app
+# Change working directory to flask folder for relative paths
+os.chdir(flask_dir)
 
-# Vercel expects the Flask app to be named 'app'
-# This file serves as the entrypoint for Vercel
+# Import the Flask app
+from app import app as application
+
+# Export for Vercel
+app = application
