@@ -1,0 +1,8 @@
+notebooks/
+Vegetable Images/
+.git/
+.zencoder/
+.zenflow/
+*.ipynb
+README copy.md
+LICENSE

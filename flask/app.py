@@ -4,7 +4,9 @@ from flask import Flask, request, render_template
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            template_folder=os.path.join(os.path.dirname(__file__), 'templates'),
+            static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 
 # Loading the model
 model = None
