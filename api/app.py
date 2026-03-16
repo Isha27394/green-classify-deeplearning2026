@@ -1,8 +1,12 @@
 import numpy as np
 import os
 from flask import Flask, request, render_template
-from keras.models import load_model
-from keras.utils import load_img, img_to_array
+try:
+    from keras.models import load_model
+    from keras.utils import load_img, img_to_array
+    KERAS_AVAILABLE = True
+except ImportError:
+    KERAS_AVAILABLE = False
 
 # Get the flask directory path
 flask_dir = os.path.join(os.path.dirname(__file__), '..', 'flask')
@@ -14,12 +18,12 @@ app = Flask(__name__,
 # Loading the model
 model = None
 model_path = os.path.join(flask_dir, "vegetable_classification.h5")
-if os.path.exists(model_path):
+if KERAS_AVAILABLE and os.path.exists(model_path):
     model = load_model(model_path, compile=False)
     print("Model loaded successfully!")
 else:
-    print(f"Warning: Model file not found at {model_path}")
-    print("Please train the model using the Jupyter notebook first.")
+    print(f"Warning: Model file not found or Keras not available.")
+    print("Please train the model and run locally.")
 
 # Default home page or route
 @app.route('/')
@@ -41,8 +45,8 @@ def logout():
 @app.route('/result', methods=["GET", "POST"])
 def res():
     if request.method == "POST":
-        if model is None:
-            return render_template('prediction.html', pred="Model not loaded! Please train the model first.")
+        if model is None or not KERAS_AVAILABLE:
+            return render_template('prediction.html', pred="Model not loaded or Keras not available! Please run locally for full features.")
         
         f = request.files['image']
         uploads_dir = os.path.join(flask_dir, 'uploads')
