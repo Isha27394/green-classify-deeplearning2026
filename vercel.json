@@ -8,6 +8,10 @@
         "maxLambdaSize": "15mb",
         "includeFiles": "flask/**"
       }
+    },
+    {
+      "src": "flask/static/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
